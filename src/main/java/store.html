@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous">
+    <style>
+        h1 {
+            margin-top: 5px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            margin-top: 50px;
+            margin-bottom: 30px;
+        }
+
+        h4 {
+            margin-top: 50px;
+        }
+
+        .container {
+            margin-top: 60px;
+            width: 50% !important;
+        }
+
+        .table-row:hover {
+            background: lightblue !important;
+        }
+
+        .table-row:hover td {
+            background: transparent;
+        }
+
+        .result {
+            margin-top: 60px;
+        }
+
+        .result h4 {
+            margin-top: 20px;
+            margin-bottom: 5px;
+            color: steelblue;
+            filter: brightness(70%);
+        }
+
+        .result table {
+            margin-top: 20px;
+        }
+
+        .result th {
+            font-weight: normal;
+            color: steelblue;
+            font-size: smaller;
+        }
+
+        .money {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr;
+            align-items: center;
+            text-align: center;
+        }
+
+        .money form {
+            width: 50%;
+            justify-content: center;
+            display: inline-block;
+        }
+
+        .money-in input  {
+            text-align: start;
+        }
+
+        textarea:focus, input:focus{
+            outline: none;
+        }
+
+        input::placeholder {
+            font-size: 14px;
+            text-align: start;
+        }
+
+        .money-out input  {
+            text-align: end;
+        }
+
+        .pay {
+            margin-top: 80px;
+        }
+
+        .btn {
+            height: 40px;
+            width: 200px;
+            text-align: center;
+            justify-content: center;
+            background-color: aliceblue;
+        }
+
+        .btn h4 {
+            margin-top: 0;
+            margin-bottom: 0;
+            color: steelblue;
+            filter: brightness(70%);
+        }
+
+        .btn:hover {
+            background-color: lightblue;
+            color: steelblue;
+        }
+
+        .table-row-selected {
+            background: aliceblue !important;
+        }
+
+        .table-row-selected td {
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+<h1 class="text-center">Store</h1>
+
+<div class="container">
+    <h2 class="text-center">Products</h2>
+    <table class="table table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Product ID</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Product Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="table-row">
+            <th scope="row">1</th>
+            <td>0834r08r</td>
+            <td>Dress</td>
+            <td>55.99</td>
+        </tr>
+        <tr class="table-row">
+            <th scope="row">2</th>
+            <td>08owuig82</td>
+            <td>Coat</td>
+            <td>249.99</td>
+        </tr>
+        <tr class="table-row">
+            <th scope="row">3</th>
+            <td>hgd974t</td>
+            <td>Hat</td>
+            <td>9.56</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="result"></div>
+    <script type="text/javascript">
+        const table = document.querySelector('table>tbody');
+        const result = document.querySelector(".result");
+        let product = null;
+        let moneyInInput;
+        let moneyOutInput;
+
+        function getProduct(event) {
+            const productRow = event.target.closest('tr');
+
+            let product = {};
+
+            if(productRow) {
+                const rowData = (productRow.innerText).split("\t");
+                product = {
+                    id: rowData[1],
+                    name: rowData[2],
+                    price: rowData[3]
+                }
+                console.log(rowData);
+                console.log(product)
+            }
+
+            return product;
+        }
+
+        function displaySelectedProduct(product) {
+            const selectedProduct = document.createElement("div");
+            selectedProduct.classList.add('selected-product');
+
+            selectedProduct.innerHTML = `
+                    <h4 class="text-center">Selected Product</h4>
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Product ID</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Product Price</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="table-row-selected">
+                                <td>${product.id}</td>
+                                <td>${product.name}</td>
+                                <td>${product.price}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+            `;
+
+            result.appendChild(selectedProduct);
+        }
+
+        function displayMoneyBlock() {
+            const money = document.createElement("div");
+            money.classList.add("money");
+
+            money.innerHTML = `
+                <div class="money-in">
+                    <h4 class="text-center">Enter cash amount:</h4>
+                    <form>
+                        <div class="form-group">
+                            <label for="moneyAmount"></label>
+                            <input type="number" min="0.00" max="10000.00" step="0.01" class="form-control"
+                                   id="moneyAmount" placeholder="Enter cash amount...">
+                        </div>
+                    </form>
+                </div>
+                <div class="money-out">
+                    <h4 class="text-center">Your change:</h4>
+                    <form>
+                        <div class="form-group">
+                            <label for="changeAmount"></label>
+                            <input type="number" class="form-control" id="changeAmount" value="0.00" readonly>
+                        </div>
+                    </form>
+                </div>
+                <div class="pay">
+                    <button type="button" class="btn btn-outline-secondary"><h4>Pay</h4></button>
+                </div>
+            `;
+
+            result.appendChild(money);
+        }
+
+        const formatter = new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
+
+        function displayThankYou() {
+            const thankYou = document.createElement("h2");
+            thankYou.classList.add("text-center");
+            thankYou.innerText = "Thanks for your purchase!";
+            result.appendChild(thankYou);
+        }
+
+        function displayNotEnoughMoney() {
+            const notEnoughMoney = document.createElement("h2");
+            notEnoughMoney.classList.add("text-center");
+            notEnoughMoney.innerText = "Not enough money!";
+            result.appendChild(notEnoughMoney);
+        }
+
+        function displayChange(changeValue) {
+            const change = document.createElement("h2");
+            change.classList.add("text-center");
+            change.innerText = `Your change: ${changeValue}`;
+            result.appendChild(change);
+        }
+
+
+        table.addEventListener("click", (e) => {
+            if(e.key !== 'Enter') {
+                if(result.innerHTML){
+                    result.innerHTML = "";
+                }
+            }
+            product = getProduct(e);
+            displaySelectedProduct(product);
+            displayMoneyBlock();
+
+            moneyInInput = document.querySelector(".money-in input");
+            moneyOutInput = document.querySelector(".money-out input");
+
+            moneyInInput.addEventListener("input", () => {
+                moneyInInput.style.background = "#F0F4F9";
+
+                const cash = formatter.format(moneyInInput.value);
+                moneyOutInput.value = formatter.format(Math.round(cash * 100 - product.price * 100) / 100);
+
+                console.log(cash - product.price);
+            });
+
+            const payButton = document.querySelector("button");
+            payButton.addEventListener('click', () => {
+                const h2 = document.querySelector("h2");
+                if (h2.innerText !== "") {
+                    h2.innerText = "";
+                }
+                const changeValue = Number(moneyOutInput.value);
+                if (changeValue < 0) {
+                    displayNotEnoughMoney();
+                } else if (changeValue === 0) {
+                    displayThankYou();
+                } else {
+                    displayChange(changeValue);
+                }
+            });
+        })
+    </script>
+</div>
+</body>
+</html>
