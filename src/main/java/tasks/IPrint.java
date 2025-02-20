@@ -2,7 +2,7 @@ package tasks;
 
 import java.util.Arrays;
 
-public interface IPrint extends IColor {
+interface IPrint extends IColor {
 
     default void printMessage(String message) {
         System.out.printf("%s%s%s%n", COLOR_GREEN, message, COLOR_RESET);

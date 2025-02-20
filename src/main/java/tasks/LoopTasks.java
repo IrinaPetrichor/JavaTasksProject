@@ -2,7 +2,7 @@ package tasks;
 
 import java.util.Arrays;
 
-public class LoopTasks implements IPrint {
+class LoopTasks implements IPrint {
     /*
      * Loops:
      */

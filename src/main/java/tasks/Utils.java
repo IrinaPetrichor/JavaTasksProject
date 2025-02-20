@@ -1,6 +1,6 @@
 package tasks;
 
-public class Utils {
+class Utils {
 
     private static int taskNumber = 1;
 

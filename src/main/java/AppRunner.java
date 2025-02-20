@@ -1,3 +1,4 @@
+import tasks.ArrayTasksRunner;
 import tasks.IfElseTasksRunner;
 import tasks.LoopTasksRunner;
 
@@ -11,8 +12,8 @@ public class AppRunner{
 
         LoopTasksRunner loopTasksRunner = new LoopTasksRunner();
         loopTasksRunner.runLoopTasks();
-//
-//        ArrayTasksRunner arrayTasksRunner = new ArrayTasksRunner();
-//        arrayTasksRunner.runArrayTasks();
+
+        ArrayTasksRunner arrayTasksRunner = new ArrayTasksRunner();
+        arrayTasksRunner.runArrayTasks();
     }
 }

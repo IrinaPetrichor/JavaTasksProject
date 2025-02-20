@@ -2,7 +2,7 @@ package tasks;
 
 import java.util.Scanner;
 
-public interface IScan extends IPrint {
+interface IScan extends IPrint {
 
     private int getIntInput() {
         Scanner scanner = new Scanner(System.in);  // Create a Scanner object

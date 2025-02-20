@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class IfElseTasks implements IPrint {
+class IfElseTasks implements IPrint {
     /*
      * Conditional operators:
      */
